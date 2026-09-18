@@ -4,5 +4,6 @@ files/fk.ansible-push
 files/fk.publish-event
 files/un.ansible-pull.update
 files/un.monitor-backups
+files/fk.monitor-backups
 files/fk.press-img-downloader
 files/fk.toolbox-user
