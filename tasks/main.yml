@@ -31,3 +31,11 @@
   - ansible.builtin.import_tasks: desktop.yml
   - ansible.builtin.import_tasks: polkit.yml
   - ansible.builtin.import_tasks: systemd.yml
+
+  # systemd_unit
+  - name: Configure systemd units
+    ansible.builtin.include_tasks: systemd_unit.yml
+    loop: "{{ un_install_systemd_units }}"
+    loop_control:
+      loop_var: item
+      label: "{{ item.name }}"

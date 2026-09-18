@@ -1,0 +1,63 @@
+---
+- vars:
+    __un_install_systemd_unit_name: "{{ item.name | splitext | first }}"
+    __un_install_systemd_unit_path: "/etc/systemd/system/{{ __un_install_systemd_unit_name }}.{{ item.type | default('service') }}"
+  block:
+
+  # assert
+  - name: Assertions for un-install-systemd-unit
+    ansible.builtin.assert:
+      that:
+      - __un_install_systemd_unit_name != None
+      - __un_install_systemd_unit_path != None
+
+  # template unit
+  - name: Template unit file {{ __un_install_systemd_unit_path }}
+    when: item.config is defined
+    become: true
+    ansible.builtin.template:
+      src: systemd-unit.j2
+      dest: "{{ __un_install_systemd_unit_path }}"
+      owner: root
+      group: root
+      mode: '0644'
+    register: __un_install_systemd_unit_file
+
+  # mkdir
+  - name: Mkdir overrides {{ __un_install_systemd_unit_path }}.d # splitext | first removes file extension
+    when: item.overrides is defined
+    become: true
+    ansible.builtin.file:
+      path: "{{ __un_install_systemd_unit_path }}.d"
+      state: directory
+      owner: root
+      group: root
+      mode: '0755'
+
+  # template override
+  - name: Template override {{ __un_install_systemd_unit_path }}.d/override.conf
+    become: true
+    ansible.builtin.template:
+      src: systemd-unit-override.j2
+      dest: "{{ __un_install_systemd_unit_path }}.d/override.conf"
+      owner: root
+      group: root
+      mode: '0644'
+    when: item.overrides is defined
+    register: __systemd_unit_override
+
+  # systemctl daemon-reload
+  - name: Reload systemd daemon if units changed
+    when: (__un_install_systemd_unit_file is defined and __un_install_systemd_unit_file is changed) or (__systemd_unit_override is defined and __systemd_unit_override is changed)
+    become: true
+    ansible.builtin.systemd_service:
+      daemon_reload: true
+
+  # unit state
+  - name: Manage state of {{ __un_install_systemd_unit_name }}
+    when: (item.state is defined) or (item.enabled is defined)
+    become: true
+    ansible.builtin.systemd_service:
+      name: "{{ __un_install_systemd_unit_name }}.{{ item.type | default('service') }}"
+      state: "{{ item.state | default('started') }}"
+      enabled: "{{ item.enabled | default(true) }}"
