@@ -1,0 +1,29 @@
+[Desktop Entry]
+Encoding={{ item.encoding | default('UTF-8') }}
+Type={{ item.type | default('Application') }}
+Name={{ item.name }}
+{% if item.comment is defined %}
+Comment={{ item.comment }}
+{% endif %}
+Exec={{ item.exec }}
+{% if item.path is defined %}
+Path={{ item.path }}
+{% endif %}
+{% if item.icon is defined %}
+Icon={{ item.icon }}
+{% endif %}
+{% if item.categories is defined %}
+Categories={{ item.categories if item.categories is string else item.categories | join(';') ~ ';' }}
+{% endif %}
+Terminal={{ item.terminal | default(false) | lower }}
+{% if item.mime_type is defined %}
+MimeType={{ item.mime_type if item.mime_type is string else item.mime_type | join(';') ~ ';' }}
+{% endif %}
+{% if item.startup_notify is defined %}
+StartupNotify={{ item.startup_notify | lower }}
+{% endif %}
+{% if item.extra_entries is defined %}
+{% for key, value in item.extra_entries.items() %}
+{{ key }}={{ value }}
+{% endfor %}
+{% endif %}
