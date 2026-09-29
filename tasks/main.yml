@@ -1,9 +1,6 @@
 ---
 - name: un-install
-  tags: [un-install]
-  vars:
-    __un_install_path_icon: "{{ un_install_dst_path }}/{{ un_install_icon }}"
-    __un_install_path_exec: "{{ un_install_dst_path }}/{{ un_install_exec }}"
+  tags: [role-un-install]
   block:
 
   # assert
@@ -12,6 +9,7 @@
       that:
       - un_install_app != None
       - un_install_user != None
+      quiet: true
 
   # make sure user exists
   - name: Check if user exists {{ un_install_user }}

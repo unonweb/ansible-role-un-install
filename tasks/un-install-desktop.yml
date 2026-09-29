@@ -4,10 +4,17 @@
   - un_install_state == "present"
   - un_install_desktop is not None
   - un_install_desktop is not string
-  - un_install_desktop is not mapping
   - un_install_desktop is iterable
+  - un_install_desktop is mapping
   - un_install_desktop | length > 0
   block:
+
+  # assert
+  - name: Assertions for un-install-desktop
+    ansible.builtin.assert:
+      that:
+      - un_install_desktop['exec'] != None
+      quiet: true
 
   # mkdir
   - name: Mkdir {{ un_install_desktop_dst | dirname }}
@@ -22,7 +29,6 @@
   # template
   - name: Template .desktop file {{ un_install_desktop_dst }}
     become: true
-    loop: "{{ desktop_entries }}"
     ansible.builtin.template:
       src: desktop.j2
       dest: "{{ un_install_desktop_dst }}"
