@@ -21,15 +21,16 @@ un_install_dst_path: "{{ '/opt/' + un_install_app if un_install_user == 'root' e
 # =======
 un_install_desktop:
   name: "{{ un_install_app }}"
-  exec:
-  type # default: Application
-  terminal # default: false
-  path:
-  icon:
-  categories:
-  mime_type:
-  startup_notify:
+  exec: ""
+  type: Application
+  terminal: false
+  path: ""
+  icon: ""
+  categories: # string or list
+  mime_type: # string or list
+  startup_notify: false
   extra_entries:
+  encoding: UTF-8
 un_install_desktop_dst: "{{ '/usr/share/applications/' + un_install_app + '.desktop' if un_install_user == 'root' else '/home/' + un_install_user + '/.local/share/applications/' + un_install_app + '.desktop' }}"
 
 # ENV

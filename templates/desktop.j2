@@ -1,6 +1,6 @@
 [Desktop Entry]
-Encoding={{ un_install_desktop.encoding | default('UTF-8') }}
-Type={{ un_install_desktop.type | default('Application') }}
+Encoding={{ un_install_desktop.encoding }}
+Type={{ un_install_desktop.type }}
 Name={{ un_install_desktop.name }}
 {% if un_install_desktop.comment is defined %}
 Comment={{ un_install_desktop.comment }}
@@ -15,7 +15,7 @@ Icon={{ un_install_desktop.icon }}
 {% if un_install_desktop.categories is defined %}
 Categories={{ un_install_desktop.categories if un_install_desktop.categories is string else un_install_desktop.categories | join(';') ~ ';' }}
 {% endif %}
-Terminal={{ un_install_desktop.terminal | default(false) | lower }}
+Terminal={{ un_install_desktop.terminal | lower }}
 {% if un_install_desktop.mime_type is defined %}
 MimeType={{ un_install_desktop.mime_type if un_install_desktop.mime_type is string else un_install_desktop.mime_type | join(';') ~ ';' }}
 {% endif %}
