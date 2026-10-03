@@ -36,6 +36,10 @@ un_install_desktop_dst: "{{ '/usr/share/applications/' + un_install_app + '.desk
 # ENV
 # ===
 un_install_env: {}
+un_install_env_type: ""
+# bash
+# ini
+
 # dictionary
 un_install_env_src:
 # file relative to {{ role }}/{{ app }}/ 

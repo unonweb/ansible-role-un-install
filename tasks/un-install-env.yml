@@ -1,43 +1,47 @@
 ---
-# assert
-- name: Assertions for env
-  when: (un_install_env_src != None) or (un_install_env != None)
-  ansible.builtin.assert:
-    that:
-    - un_install_env_dst != None
-
-# install
-- when: un_install_state == "present"
+- tags: [role-un-install-env]
   block:
-  
-  # env copy
-  - when: un_install_env_src != None
-    name: Copy {{ un_install_env_src }}
-    become: true
-    ansible.builtin.copy:
-      src: "{{ role_path }}/files/{{ un_install_app }}/{{ un_install_env_src }}"
-      dest: "{{ un_install_dst_path }}/{{ un_install_env_dst }}"
-      owner: "{{ un_install_user }}"
-      group: "{{ un_install_user }}"
-      mode: preserve
-      force: "{{ un_install_env_force }}"
+    
+  # assert
+  - name: Assertions for un-install-env
+    when: (un_install_env_src != None) or (un_install_env != None)
+    ansible.builtin.assert:
+      that:
+      - un_install_env_dst != None
+      quiet: true
 
-  # env template
-  - when: un_install_env != None
-    become: true
-    name: Template .env file to {{ un_install_dst_path }}/{{ un_install_env_dst }}
-    ansible.builtin.template:
-      src: env.j2
-      dest: "{{ un_install_dst_path }}/{{ un_install_env_dst }}"
-      mode: u=rw,g=,o=
-      force: "{{ un_install_env_force }}"
+  # install
+  - when: un_install_state == "present"
+    block:
+    
+    # env copy
+    - when: un_install_env_src != None
+      name: Copy {{ un_install_env_src }}
+      become: true
+      ansible.builtin.copy:
+        src: "{{ role_path }}/files/{{ un_install_app }}/{{ un_install_env_src }}"
+        dest: "{{ un_install_dst_path }}/{{ un_install_env_dst }}"
+        owner: "{{ un_install_user }}"
+        group: "{{ un_install_user }}"
+        mode: preserve
+        force: "{{ un_install_env_force }}"
 
-# remove
-- when: un_install_state == "absent"
-  block:
+    # env template
+    - when: un_install_env is mapping and un_install_env | length > 0
+      become: true
+      name: Template .env file ({{ un_install_env_type }}) to {{ un_install_dst_path }}/{{ un_install_env_dst }}
+      ansible.builtin.template:
+        src: "env.{{ un_install_env_type }}.j2"
+        dest: "{{ un_install_dst_path }}/{{ un_install_env_dst }}"
+        mode: u=rw,g=,o=
+        force: "{{ un_install_env_force }}"
 
-  - name: Remove {{ un_install_env_dst }}
-    become: true
-    ansible.builtin.file:
-      path: "{{ un_install_env_dst }}"
-      state: absent
+  # remove
+  - when: un_install_state == "absent"
+    block:
+
+    - name: Remove {{ un_install_env_dst }}
+      become: true
+      ansible.builtin.file:
+        path: "{{ un_install_env_dst }}"
+        state: absent
