@@ -20,11 +20,22 @@ un_install_dst_path: "{{ '/opt/' + un_install_app if un_install_user == 'root' e
 # DESKTOP
 # =======
 un_install_desktop:
+  name: "{{ un_install_app }}"
+  exec: ""
+  type: Application
+  terminal: false
+  path: ""
+  icon: ""
+  categories: [] # string or list
+  mime_type: [] # string or list
+  startup_notify: false
+  extra_entries: {}
+  encoding: UTF-8
 un_install_desktop_dst: "{{ '/usr/share/applications/' + un_install_app + '.desktop' if un_install_user == 'root' else '/home/' + un_install_user + '/.local/share/applications/' + un_install_app + '.desktop' }}"
 
 # ENV
 # ===
-un_install_env:
+un_install_env: {}
 # dictionary
 un_install_env_src:
 # file relative to {{ role }}/{{ app }}/ 
@@ -61,3 +72,10 @@ un_install_systemd_overrides: []
 # path relative to {{ role }}/{{ app }}/
 # -> apt-daily-upgrade.service.d/ziska.override.conf
 un_install_systemd_reset: []
+un_install_systemd_units: []
+# - name: 
+#   type:
+#   state:
+#   enabled:
+#   config:
+#   overrides:

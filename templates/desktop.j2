@@ -1,0 +1,29 @@
+[Desktop Entry]
+Encoding={{ __un_install_desktop_combined.encoding }}
+Type={{ __un_install_desktop_combined.type }}
+Name={{ __un_install_desktop_combined.name }}
+{% if __un_install_desktop_combined.comment is defined %}
+Comment={{ __un_install_desktop_combined.comment }}
+{% endif %}
+Exec={{ __un_install_desktop_combined.exec }}
+{% if __un_install_desktop_combined.path is defined %}
+Path={{ __un_install_desktop_combined.path }}
+{% endif %}
+{% if __un_install_desktop_combined.icon is defined %}
+Icon={{ __un_install_desktop_combined.icon }}
+{% endif %}
+{% if __un_install_desktop_combined.categories is defined %}
+Categories={{ __un_install_desktop_combined.categories if __un_install_desktop_combined.categories is string else __un_install_desktop_combined.categories | join(';') ~ ';' }}
+{% endif %}
+Terminal={{ __un_install_desktop_combined.terminal | lower }}
+{% if __un_install_desktop_combined.mime_type is defined %}
+MimeType={{ __un_install_desktop_combined.mime_type if __un_install_desktop_combined.mime_type is string else __un_install_desktop_combined.mime_type | join(';') ~ ';' }}
+{% endif %}
+{% if __un_install_desktop_combined.startup_notify is defined %}
+StartupNotify={{ __un_install_desktop_combined.startup_notify | lower }}
+{% endif %}
+{% if __un_install_desktop_combined.extra_entries is defined %}
+{% for key, value in __un_install_desktop_combined.extra_entries.items() %}
+{{ key }}={{ value }}
+{% endfor %}
+{% endif %}

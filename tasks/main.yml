@@ -1,17 +1,7 @@
 ---
 - name: un-install
-  tags: [un-install]
-  vars:
-    __un_install_path_icon: "{{ un_install_dst_path }}/{{ un_install_icon }}"
-    __un_install_path_exec: "{{ un_install_dst_path }}/{{ un_install_exec }}"
+  tags: [role-un-install]
   block:
-
-  # debug
-  - when: false
-    ansible.builtin.debug:
-      msg:
-      - "un_install_exec_link: {{ un_install_exec_link }}"
-      - "__un_install_path_exec: {{ __un_install_path_exec }}"
 
   # assert
   - name: Assertions for un-install role
@@ -19,15 +9,24 @@
       that:
       - un_install_app != None
       - un_install_user != None
+      quiet: true
 
   # make sure user exists
   - name: Check if user exists {{ un_install_user }}
     command: "getent passwd {{ un_install_user }}"
     changed_when: false
 
-  - ansible.builtin.import_tasks: app.yml
-  - ansible.builtin.import_tasks: env.yml
-  - ansible.builtin.import_tasks: exec_link.yml
-  - ansible.builtin.import_tasks: desktop.yml
-  - ansible.builtin.import_tasks: polkit.yml
-  - ansible.builtin.import_tasks: systemd.yml
+  - ansible.builtin.import_tasks: un-install-app.yml
+  - ansible.builtin.import_tasks: un-install-env.yml
+  - ansible.builtin.import_tasks: un-install-exec-link.yml
+  - ansible.builtin.import_tasks: un-install-desktop.yml
+  - ansible.builtin.import_tasks: un-install-polkit.yml
+  - ansible.builtin.import_tasks: un-install-systemd.yml
+
+  # systemd_unit
+  - name: Configure systemd units
+    ansible.builtin.include_tasks: un-install-systemd-unit.yml
+    loop: "{{ un_install_systemd_units }}"
+    loop_control:
+      loop_var: item
+      label: "{{ item.name }}"

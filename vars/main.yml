@@ -1,0 +1,18 @@
+---
+__un_install_path_icon: "{{ un_install_dst_path }}/{{ un_install_icon }}"
+__un_install_path_exec: "{{ un_install_dst_path }}/{{ un_install_exec }}"
+
+__un_install_desktop_defaults:
+  name: "{{ un_install_app }}"
+  exec: ""
+  type: Application
+  terminal: false
+  path: ""
+  icon: ""
+  categories: [] # string or list
+  mime_type: [] # string or list
+  startup_notify: false
+  extra_entries: {}
+  encoding: UTF-8
+
+__un_install_desktop_combined: "{{ __un_install_desktop_defaults | combine(un_install_desktop) }}"

@@ -13,8 +13,8 @@
       owner: "{{ un_install_user }}"
       group: "{{ un_install_user }}"
 
-  - ansible.builtin.import_tasks: app_install_with_git.yml
-  - ansible.builtin.import_tasks: app_install_with_fs.yml
+  - ansible.builtin.import_tasks: un-install-app-install-with-git.yml
+  - ansible.builtin.import_tasks: un-install-app-install-with-fs.yml
 
   # chmod exec
   - when: un_install_exec_mode != None
