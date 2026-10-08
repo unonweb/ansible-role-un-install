@@ -1,7 +1,7 @@
 ---
 # assert
 - name: Assertions for env
-  when: (un_install_env_src != None) or (un_install_env != None)
+  when: (un_install_env_src | length > 0 ) or (un_install_env | length > 0)
   ansible.builtin.assert:
     that:
     - un_install_env_dst != None
@@ -11,8 +11,8 @@
   block:
   
   # env copy
-  - when: un_install_env_src != None
-    name: Copy {{ un_install_env_src }}
+  - when: un_install_env_src | length > 0 
+    name: Copy .env file {{ un_install_env_src }}
     become: true
     ansible.builtin.copy:
       src: "{{ role_path }}/files/{{ un_install_app }}/{{ un_install_env_src }}"
@@ -23,7 +23,7 @@
       force: "{{ un_install_env_force }}"
 
   # env template
-  - when: un_install_env != None
+  - when: un_install_env | length > 0 
     become: true
     name: Template .env file to {{ un_install_dst_path }}/{{ un_install_env_dst }}
     ansible.builtin.template:
