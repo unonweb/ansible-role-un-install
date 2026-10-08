@@ -1,29 +1,49 @@
+
+{# 
+	Truthiness Checks: skip empty strings/lists and undefined/null values 
+#}
 [Desktop Entry]
+{% if __un_install_desktop_combined.encoding %}
 Encoding={{ __un_install_desktop_combined.encoding }}
+{% endif %}
+{% if __un_install_desktop_combined.type %}
 Type={{ __un_install_desktop_combined.type }}
+{% endif %}
+{% if __un_install_desktop_combined.name %}
 Name={{ __un_install_desktop_combined.name }}
-{% if __un_install_desktop_combined.comment is defined %}
+{% endif %}
+{% if __un_install_desktop_combined.comment %}
 Comment={{ __un_install_desktop_combined.comment }}
 {% endif %}
+{% if __un_install_desktop_combined.exec %}
 Exec={{ __un_install_desktop_combined.exec }}
-{% if __un_install_desktop_combined.path is defined %}
+{% endif %}
+{% if __un_install_desktop_combined.path %}
 Path={{ __un_install_desktop_combined.path }}
 {% endif %}
-{% if __un_install_desktop_combined.icon is defined %}
+{% if __un_install_desktop_combined.icon %}
 Icon={{ __un_install_desktop_combined.icon }}
 {% endif %}
-{% if __un_install_desktop_combined.categories is defined %}
+{% if __un_install_desktop_combined.categories %}
 Categories={{ __un_install_desktop_combined.categories if __un_install_desktop_combined.categories is string else __un_install_desktop_combined.categories | join(';') ~ ';' }}
 {% endif %}
+{% if __un_install_desktop_combined.terminal is defined and __un_install_desktop_combined.terminal != '' %}
 Terminal={{ __un_install_desktop_combined.terminal | lower }}
-{% if __un_install_desktop_combined.mime_type is defined %}
+{% endif %}
+{% if __un_install_desktop_combined.mime_type %}
 MimeType={{ __un_install_desktop_combined.mime_type if __un_install_desktop_combined.mime_type is string else __un_install_desktop_combined.mime_type | join(';') ~ ';' }}
 {% endif %}
-{% if __un_install_desktop_combined.startup_notify is defined %}
+{% if __un_install_desktop_combined.startup_notify is defined and __un_install_desktop_combined.startup_notify != '' %}
 StartupNotify={{ __un_install_desktop_combined.startup_notify | lower }}
 {% endif %}
-{% if __un_install_desktop_combined.extra_entries is defined %}
+{% if __un_install_desktop_combined.extra_entries %}
 {% for key, value in __un_install_desktop_combined.extra_entries.items() %}
+{% if value is string or value is iterable %}
+{% if value | length > 0 %}
 {{ key }}={{ value }}
+{% endif %}
+{% elif value is not none %}
+{{ key }}={{ value }}
+{% endif %}
 {% endfor %}
 {% endif %}
