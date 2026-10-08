@@ -1,10 +1,14 @@
 ---
-# assert
-- name: Assertions for env
-  when: (un_install_env_src | length > 0 ) or (un_install_env | length > 0)
-  ansible.builtin.assert:
-    that:
-    - un_install_env_dst != None
+- tags: [role-un-install-env]
+  block:
+    
+  # assert
+  - name: Assertions for un-install-env
+    when: (un_install_env_src | length > 0 ) or (un_install_env | length > 0)
+    ansible.builtin.assert:
+      that:
+      - un_install_env_dst != None
+      quiet: true
 
 # install
 - when: un_install_state == "present"
@@ -22,22 +26,22 @@
       mode: preserve
       force: "{{ un_install_env_force }}"
 
-  # env template
-  - when: un_install_env | length > 0 
-    become: true
-    name: Template .env file to {{ un_install_dst_path }}/{{ un_install_env_dst }}
-    ansible.builtin.template:
-      src: env.j2
-      dest: "{{ un_install_dst_path }}/{{ un_install_env_dst }}"
-      mode: u=rw,g=,o=
-      force: "{{ un_install_env_force }}"
+    # env template
+    - when: un_install_env is mapping and un_install_env | length > 0
+      become: true
+      name: Template .env file ({{ un_install_env_type }}) to {{ un_install_dst_path }}/{{ un_install_env_dst }}
+      ansible.builtin.template:
+        src: "env.{{ un_install_env_type }}.j2"
+        dest: "{{ un_install_dst_path }}/{{ un_install_env_dst }}"
+        mode: u=rw,g=,o=
+        force: "{{ un_install_env_force }}"
 
-# remove
-- when: un_install_state == "absent"
-  block:
+  # remove
+  - when: un_install_state == "absent"
+    block:
 
-  - name: Remove {{ un_install_env_dst }}
-    become: true
-    ansible.builtin.file:
-      path: "{{ un_install_env_dst }}"
-      state: absent
+    - name: Remove {{ un_install_env_dst }}
+      become: true
+      ansible.builtin.file:
+        path: "{{ un_install_env_dst }}"
+        state: absent
