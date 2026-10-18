@@ -16,8 +16,8 @@
     block:
     
     # env copy
-    - when: un_install_env_src | length > 0
-      name: Copy {{ un_install_env_src }}
+    - when: un_install_env_src != None
+      name: Copy .env file {{ un_install_env_src }}
       become: true
       ansible.builtin.copy:
         src: "{{ role_path }}/files/{{ un_install_app }}/{{ un_install_env_src }}"
@@ -27,15 +27,15 @@
         mode: preserve
         force: "{{ un_install_env_force }}"
 
-    # env template
-    - when: un_install_env is mapping and un_install_env | length > 0
-      become: true
-      name: Template .env file ({{ un_install_env_type }}) to {{ un_install_dst_path }}/{{ un_install_env_dst }}
-      ansible.builtin.template:
-        src: "env.{{ un_install_env_type }}.j2"
-        dest: "{{ un_install_dst_path }}/{{ un_install_env_dst }}"
-        mode: u=rw,g=,o=
-        force: "{{ un_install_env_force }}"
+  # env template
+  - when: (un_install_env is mapping) and (un_install_env | length > 0)
+    become: true
+    name: Template .env file ({{ un_install_env_type }}) to {{ un_install_dst_path }}/{{ un_install_env_dst }}
+    ansible.builtin.template:
+      src: "env.{{ un_install_env_type }}.j2"
+      dest: "{{ un_install_dst_path }}/{{ un_install_env_dst }}"
+      mode: u=rw,g=,o=
+      force: "{{ un_install_env_force }}"
 
   # remove
   - when: un_install_state == "absent"

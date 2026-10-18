@@ -39,6 +39,7 @@ un_install_env: {}
 un_install_env_type: ""
 # bash
 # ini
+# js
 
 # dictionary
 un_install_env_src: ""
