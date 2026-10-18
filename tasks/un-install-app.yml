@@ -17,7 +17,7 @@
   - ansible.builtin.import_tasks: un-install-app-install-with-fs.yml
 
   # chmod exec
-  - when: un_install_exec_mode != None
+  - when: un_install_exec_mode | length > 0
     name: Chmod {{ un_install_exec_mode }} {{ un_install_exec }}
     become: true
     ansible.builtin.file:
@@ -30,7 +30,7 @@
 
   - ansible.builtin.assert:
       that:
-        - un_install_app != None
+        - un_install_app | length > 0
 
   - when: un_install_app in un_install_dst_path
     name: Remove {{ un_install_dst_path }}

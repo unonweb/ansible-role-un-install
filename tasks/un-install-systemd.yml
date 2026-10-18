@@ -141,7 +141,7 @@
       loop: "{{ un_install_systemd_overrides }}"
       when:
       - item is defined
-      - item != None
+      - item | length > 0
       ansible.builtin.file:
         path: "/etc/systemd/system/{{ item | dirname }}"
         state: absent
@@ -154,7 +154,7 @@
     when:
       - un_install_systemd_template | length > 0
       - item is defined
-      - item != None
+      - item | length > 0
     ansible.builtin.file:
         path: "/etc/systemd/system/{{ item.split('/')[-1].replace('.j2', '') }}"
         state: absent
@@ -167,7 +167,7 @@
     when:
       - un_install_systemd_copy | length > 0
       - item is defined
-      - item != None
+      - item | length > 0
     ansible.builtin.file:
         path: "/etc/systemd/system/{{ item.split('/')[-1] }}"
         state: absent

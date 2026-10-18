@@ -7,8 +7,8 @@
   - name: Assertions for un-install role
     ansible.builtin.assert:
       that:
-      - un_install_app != None
-      - un_install_user != None
+      - un_install_app | length > 0
+      - un_install_user | length > 0
       quiet: true
 
   # make sure user exists

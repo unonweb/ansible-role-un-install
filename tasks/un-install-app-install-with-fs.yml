@@ -1,7 +1,7 @@
 ---
 # install from fs
 - when: 
-  - un_install_with_fs_src != None
+  - un_install_with_fs_src | length > 0
   - un_install_with_git_url == None
   block:
 

@@ -8,8 +8,8 @@
   - name: Assertions for un-install-systemd-unit
     ansible.builtin.assert:
       that:
-      - __un_install_systemd_unit_name != None
-      - __un_install_systemd_unit_path != None
+      - __un_install_systemd_unit_name | length > 0
+      - __un_install_systemd_unit_path | length > 0
 
   # template unit
   - name: Template unit file {{ __un_install_systemd_unit_path }}

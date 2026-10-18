@@ -12,7 +12,7 @@
   - name: Assertions for un-install-desktop
     ansible.builtin.assert:
       that:
-      - un_install_desktop['exec'] != None
+      - un_install_desktop['exec'] | length > 0
       quiet: true
 
   # mkdir
@@ -38,7 +38,7 @@
 - tags: [role-un-install-desktop]
   when: 
   - un_install_state == "absent"
-  - un_install_desktop_dst != None
+  - un_install_desktop_dst | length > 0
   - un_install_app in un_install_desktop_dst
   block:
   
