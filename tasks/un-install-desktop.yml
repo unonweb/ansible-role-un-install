@@ -8,36 +8,39 @@
   - un_install_desktop | length > 0
   block:
 
-  # assert
-  - name: Assertions for un-install-desktop
-    ansible.builtin.assert:
-      that:
-      - un_install_desktop['exec'] | length > 0
-      quiet: true
+  - when: un_install_desktop['state'] == "present"
+    block:
 
-  # mkdir
-  - name: Mkdir {{ un_install_desktop_dst | dirname }}
-    become: true
-    ansible.builtin.file:
-      state: directory
-      path: "{{ un_install_desktop_dst | dirname }}"
-      owner: "{{ un_install_user if un_install_desktop_dst.startswith('/home/') else 'root' }}"
-      group: "{{ un_install_user if un_install_desktop_dst.startswith('/home/') else 'root' }}"
-      mode: u=rwx,g=r,o=r
+    # assert
+    - name: Assertions for un-install-desktop
+      ansible.builtin.assert:
+        that:
+        - un_install_desktop['exec'] != ""
+        quiet: true
 
-  # template
-  - name: Template .desktop file {{ un_install_desktop_dst }}
-    become: true
-    ansible.builtin.template:
-      src: desktop.j2
-      dest: "{{ un_install_desktop_dst }}"
-      owner: "{{ un_install_user if un_install_desktop_dst.startswith('/home/') else 'root' }}"
-      group: "{{ un_install_user if un_install_desktop_dst.startswith('/home/') else 'root' }}"
-      mode: u=rw,g=,o=r
+    # mkdir
+    - name: Mkdir {{ un_install_desktop_dst | dirname }}
+      become: true
+      ansible.builtin.file:
+        state: directory
+        path: "{{ un_install_desktop_dst | dirname }}"
+        owner: "{{ un_install_user if un_install_desktop_dst.startswith('/home/') else 'root' }}"
+        group: "{{ un_install_user if un_install_desktop_dst.startswith('/home/') else 'root' }}"
+        mode: u=rwx,g=r,o=r
+
+    # template
+    - name: Template .desktop file {{ un_install_desktop_dst }}
+      become: true
+      ansible.builtin.template:
+        src: desktop.j2
+        dest: "{{ un_install_desktop_dst }}"
+        owner: "{{ un_install_user if un_install_desktop_dst.startswith('/home/') else 'root' }}"
+        group: "{{ un_install_user if un_install_desktop_dst.startswith('/home/') else 'root' }}"
+        mode: u=rw,g=,o=r
 
 - tags: [role-un-install-desktop]
   when: 
-  - un_install_state == "absent"
+  - (un_install_state == "absent") or (un_install_desktop['state'] == "absent")
   - un_install_desktop_dst != ""
   - un_install_app in un_install_desktop_dst
   block:

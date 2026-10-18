@@ -20,6 +20,7 @@ un_install_dst_path: "{{ '/opt/' + un_install_app if un_install_user == 'root' e
 # DESKTOP
 # =======
 un_install_desktop:
+  state: absent
   name: "{{ un_install_app }}"
   exec: ""
   type: Application
