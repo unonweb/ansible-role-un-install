@@ -4,7 +4,7 @@
     
   # assert
   - name: Assertions for un-install-env
-    when: (un_install_env_src | length > 0) or (un_install_env | length > 0)
+    when: (un_install_env_src != "") or (un_install_env | length > 0)
     ansible.builtin.assert:
       that:
       - un_install_env_dst != ""

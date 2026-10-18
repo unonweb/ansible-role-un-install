@@ -2,8 +2,8 @@
 # install from git
 # The repo name is not appended to this path and the destination directory must be empty. This parameter is required, unless clone is set to false.
 - when:
-  - un_install_with_git_url | length > 0
-  - un_install_with_fs_src == None
+  - un_install_with_git_url != ""
+  - un_install_with_fs_src == ""
   tags: [un-install-git]
   block:
 

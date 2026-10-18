@@ -29,7 +29,7 @@
   block:
 
   - when:
-    - un_install_exec_link | length > 0
+    - un_install_exec_link != ""
     - un_install_app in un_install_exec_link
     name: Remove {{ un_install_exec_link }}
     become: true

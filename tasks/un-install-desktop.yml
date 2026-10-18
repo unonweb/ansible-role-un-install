@@ -38,7 +38,7 @@
 - tags: [role-un-install-desktop]
   when: 
   - un_install_state == "absent"
-  - un_install_desktop_dst | length > 0
+  - un_install_desktop_dst != ""
   - un_install_app in un_install_desktop_dst
   block:
   
