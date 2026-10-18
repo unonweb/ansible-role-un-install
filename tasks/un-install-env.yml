@@ -16,7 +16,7 @@
     block:
     
     # env copy
-    - when: un_install_env_src != None
+    - when: un_install_env_src != ""
       name: Copy .env file {{ un_install_env_src }}
       become: true
       ansible.builtin.copy:

@@ -2,7 +2,7 @@
 # install from fs
 - when: 
   - un_install_with_fs_src != ""
-  - un_install_with_git_url == None
+  - un_install_with_git_url == ""
   block:
 
   - name: Create tmp dir "{{ un_install_with_fs_tmp }}"
