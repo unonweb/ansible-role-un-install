@@ -8,7 +8,7 @@
   - un_install_desktop | length > 0
   block:
 
-  - when: un_install_desktop['state'] == "present"
+  - when: (un_install_desktop['state'] is defined) and (un_install_desktop['state'] == "present")
     block:
 
     # assert
@@ -40,7 +40,7 @@
 
 - tags: [role-un-install-desktop]
   when: 
-  - (un_install_state == "absent") or (un_install_desktop['state'] == "absent")
+  - (un_install_state == "absent") or (un_install_desktop['state'] is defined and un_install_desktop['state'] == "absent")
   - un_install_desktop_dst != ""
   - un_install_app in un_install_desktop_dst
   block:

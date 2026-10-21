@@ -11,6 +11,10 @@ un_install_with_git_url: ""
 un_install_with_git_force: false
 un_install_with_git_ssh_key_file: /home/{{ un_install_user }}/.ssh/id_ed25519
 
+# ICON
+# ====
+un_install_icon: icon.png
+
 # DST
 # ===
 un_install_dst_mode: u=rwx,g=,o=
@@ -20,18 +24,18 @@ un_install_dst_path: "{{ '/opt/' + un_install_app if un_install_user == 'root' e
 # DESKTOP
 # =======
 un_install_desktop:
-  state: absent
-  name: "{{ un_install_app }}"
-  exec: ""
-  type: Application
-  terminal: false
-  path: ""
-  icon: ""
-  categories: [] # string or list
-  mime_type: [] # string or list
-  startup_notify: false
-  extra_entries: {}
-  encoding: UTF-8
+# state: ""
+# name: ""
+# exec: ""
+# type: ""
+# terminal: false
+# path: ""
+# icon: ""
+# categories: []
+# mime_type: []
+# startup_notify: false
+# extra_entries: {}
+# encoding: ""
 un_install_desktop_dst: "{{ '/usr/share/applications/' + un_install_app + '.desktop' if un_install_user == 'root' else '/home/' + un_install_user + '/.local/share/applications/' + un_install_app + '.desktop' }}"
 
 # ENV
@@ -48,10 +52,6 @@ un_install_env_src: ""
 # will be copied with the same name
 un_install_env_dst: "" # path relative to {{ un_install_dst_path }}
 un_install_env_force: true
-
-# ICON
-# ====
-un_install_icon: icon.png
 
 # POLKIT
 # ======

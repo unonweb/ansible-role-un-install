@@ -3,12 +3,13 @@ __un_install_path_icon: "{{ un_install_dst_path }}/{{ un_install_icon }}"
 __un_install_path_exec: "{{ un_install_dst_path }}/{{ un_install_exec }}"
 
 __un_install_desktop_defaults:
+  state: "present"
   name: "{{ un_install_app }}"
-  exec: ""
+  exec: "{{ __un_install_path_exec }}"
   type: Application
   terminal: false
-  path: ""
-  icon: ""
+  path: "{{ un_install_dst_path }}"
+  icon: "{{ __un_install_path_icon }}"
   categories: [] # string or list
   mime_type: [] # string or list
   startup_notify: false
