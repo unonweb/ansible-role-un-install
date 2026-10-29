@@ -6,7 +6,7 @@
   block:
 
   # mkdir
-  - name: Mkdir "{{ un_install_exec_link | dirname }}"
+  - name: Mkdir {{ un_install_exec_link | dirname }}
     become: true
     ansible.builtin.file:
       state: directory
