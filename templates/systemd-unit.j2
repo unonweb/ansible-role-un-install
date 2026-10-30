@@ -7,6 +7,8 @@
 {% for v in value %}
 {{ key }}={{ v }}
 {% endfor %}
+{% elif value is boolean %}
+{{ key }}={{ value | lower }}
 {% else %}
 {{ key }}={{ value }}
 {% endif %}
