@@ -1,6 +1,6 @@
 ---
-# install
-- when: 
+- tags: [role-un-install-exec-link]
+  when: 
   - un_install_state == "present"
   - un_install_exec_link != false
   block:

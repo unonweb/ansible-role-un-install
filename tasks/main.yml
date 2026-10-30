@@ -24,7 +24,8 @@
   - ansible.builtin.import_tasks: un-install-systemd.yml
 
   # systemd_unit
-  - name: Configure systemd units
+  - tags: [role-un-install-systemd-units]
+    name: Configure systemd units
     ansible.builtin.include_tasks: un-install-systemd-unit.yml
     loop: "{{ un_install_systemd_units }}"
     loop_control:
