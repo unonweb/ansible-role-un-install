@@ -4,7 +4,7 @@
 - when:
   - un_install_with_git_url != ""
   - un_install_with_fs_src == ""
-  tags: [un-install-git]
+  tags: [role-un-install-with-git]
   block:
 
   # install git

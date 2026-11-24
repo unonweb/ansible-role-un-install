@@ -1,12 +1,12 @@
 ---
-# install
-- when: 
+- tags: [role-un-install-exec-link]
+  when: 
   - un_install_state == "present"
   - un_install_exec_link != false
   block:
 
   # mkdir
-  - name: Mkdir "{{ un_install_exec_link | dirname }}"
+  - name: Mkdir {{ un_install_exec_link | dirname }}
     become: true
     ansible.builtin.file:
       state: directory
